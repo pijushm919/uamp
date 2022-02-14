@@ -20,7 +20,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.example.android.uamp.next"
