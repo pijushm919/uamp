@@ -164,7 +164,6 @@ open class MusicService : MediaBrowserServiceCompat() {
         }
     }
 
-    @ExperimentalCoroutinesApi
     override fun onCreate() {
         super.onCreate()
 

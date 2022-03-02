@@ -48,7 +48,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
 
         <meta-data
             android:name="com.android.automotive"
@@ -66,6 +66,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/settings_label"
+            android:exported="true"
             android:theme="@style/AppTheme.Drawer">
             <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />

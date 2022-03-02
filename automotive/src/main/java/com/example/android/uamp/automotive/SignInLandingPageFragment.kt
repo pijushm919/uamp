@@ -204,12 +204,14 @@ class SignInLandingPageFragment : Fragment() {
 
     private fun checkPlayServices(): Boolean {
         val apiAvailability = GoogleApiAvailability.getInstance();
-        val resultCode = apiAvailability.isGooglePlayServicesAvailable(context);
+        val resultCode = context?.let { apiAvailability.isGooglePlayServicesAvailable(it) };
         if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(
-                    activity, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST
-                ).show();
+            if (resultCode?.let { apiAvailability.isUserResolvableError(it) } == true) {
+                activity?.let {
+                    apiAvailability.getErrorDialog(
+                        it, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST
+                    )?.show()
+                };
             }
             return false;
         }
