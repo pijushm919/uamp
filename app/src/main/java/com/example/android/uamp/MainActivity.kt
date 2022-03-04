@@ -71,10 +71,10 @@ class MainActivity : AppCompatActivity() {
          * and the UI connects to [MusicService], this will be updated and the app will show
          * the initial list of media items.
          */
-        viewModel.rootMediaId.observe(this,
-            Observer<String> { rootMediaId ->
-                rootMediaId?.let { navigateToMediaItem(it) }
-            })
+        viewModel.rootMediaId.observe(this
+        ) { rootMediaId ->
+            rootMediaId?.let { navigateToMediaItem(it) }
+        }
 
         /**
          * Observe [MainActivityViewModel.navigateToMediaItem] for [Event]s indicating
