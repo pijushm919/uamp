@@ -24,7 +24,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.example.android.uamp.R
 import com.example.android.uamp.databinding.FragmentNowplayingBinding
@@ -65,16 +64,16 @@ class NowPlayingFragment : Fragment() {
         val context = activity ?: return
 
         // Attach observers to the LiveData coming from this ViewModel
-        nowPlayingViewModel.mediaMetadata.observe(viewLifecycleOwner,
-            Observer { mediaItem -> updateUI(view, mediaItem) })
-        nowPlayingViewModel.mediaButtonRes.observe(viewLifecycleOwner,
-            Observer { res ->
-                binding.mediaButton.setImageResource(res)
-            })
-        nowPlayingViewModel.mediaPosition.observe(viewLifecycleOwner,
-            Observer { pos ->
-                binding.position.text = NowPlayingMetadata.timestampToMSS(context, pos)
-            })
+        nowPlayingViewModel.mediaMetadata.observe(viewLifecycleOwner
+        ) { mediaItem -> updateUI(view, mediaItem) }
+        nowPlayingViewModel.mediaButtonRes.observe(viewLifecycleOwner
+        ) { res ->
+            binding.mediaButton.setImageResource(res)
+        }
+        nowPlayingViewModel.mediaPosition.observe(viewLifecycleOwner
+        ) { pos ->
+            binding.position.text = NowPlayingMetadata.timestampToMSS(context, pos)
+        }
 
         // Setup UI handlers for buttons
         binding.mediaButton.setOnClickListener {
