@@ -44,7 +44,7 @@ class NowPlayingFragment : Fragment() {
         InjectorUtils.provideNowPlayingFragmentViewModel(requireContext())
     }
 
-    lateinit var binding: FragmentNowplayingBinding
+    private lateinit var binding: FragmentNowplayingBinding
 
     companion object {
         fun newInstance() = NowPlayingFragment()

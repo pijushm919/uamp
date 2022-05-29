@@ -19,15 +19,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="2dp"
     android:background="@drawable/media_item_background">
 
     <ImageView
         android:id="@+id/albumArt"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/album_art_alt"
         android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:color/transparent" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -51,6 +53,7 @@
         android:layout_height="@dimen/exo_media_button_height"
         android:background="?attr/selectableItemBackground"
         android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider"
         app:srcCompat="@drawable/ic_play_arrow_black_24dp"
