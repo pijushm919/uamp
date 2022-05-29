@@ -2,11 +2,8 @@ package com.example.android.uamp
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.android.uamp.MediaItemData.Companion.PLAYBACK_RES_CHANGED
 import com.example.android.uamp.databinding.FragmentMediaitemBinding
 import com.example.android.uamp.fragments.MediaItemFragment
@@ -16,12 +13,41 @@ import com.example.android.uamp.fragments.MediaItemFragment
  */
 class MediaItemAdapter(
     private val itemClickedListener: (MediaItemData) -> Unit
-) : ListAdapter<MediaItemData, MediaViewHolder>(MediaItemData.diffCallback) {
+) : ListAdapter<MediaItemData, MediaItemAdapter.MediaViewHolder>(MediaItemData.diffCallback) {
+
+    class MediaViewHolder(
+        private val binding: FragmentMediaitemBinding,
+        itemClickedListener: (MediaItemData) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        var item: MediaItemData? = null
+
+        fun bind(mediaItem:MediaItemData){
+            item = mediaItem
+            binding.mediaItem = mediaItem
+            binding.executePendingBindings()
+        }
+
+        fun playbackResChanged(res:Int){
+            binding.itemState.setImageResource(res)
+        }
+
+        companion object{
+            fun from(parent:ViewGroup,itemClickedListener:(MediaItemData) -> Unit): MediaViewHolder {
+                val inflater = LayoutInflater.from(parent.context)
+                val binding = FragmentMediaitemBinding.inflate(inflater, parent, false)
+                return MediaViewHolder(binding, itemClickedListener)
+            }
+        }
+
+        init {
+            binding.root.setOnClickListener {
+                item?.let { itemClickedListener(it) }
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = FragmentMediaitemBinding.inflate(inflater, parent, false)
-        return MediaViewHolder(binding, itemClickedListener)
+        return MediaViewHolder.from(parent,itemClickedListener)
     }
 
     override fun onBindViewHolder(
@@ -37,7 +63,7 @@ class MediaItemAdapter(
             payloads.forEach { payload ->
                 when (payload) {
                     PLAYBACK_RES_CHANGED -> {
-                        holder.playbackState.setImageResource(mediaItem.playbackRes)
+                        holder.playbackResChanged(mediaItem.playbackRes)
                     }
                     // If the payload wasn't understood, refresh the full item (to be safe).
                     else -> fullRefresh = true
@@ -49,15 +75,7 @@ class MediaItemAdapter(
         // we might also do it if there was a payload that wasn't understood, just to ensure
         // there isn't a stale item.
         if (fullRefresh) {
-            holder.item = mediaItem
-            holder.titleView.text = mediaItem.title
-            holder.subtitleView.text = mediaItem.subtitle
-            holder.playbackState.setImageResource(mediaItem.playbackRes)
-
-            Glide.with(holder.albumArt)
-                .load(mediaItem.albumArtUri)
-                .placeholder(R.drawable.default_art)
-                .into(holder.albumArt)
+            holder.bind(mediaItem)
         }
     }
 
@@ -66,21 +84,4 @@ class MediaItemAdapter(
     }
 }
 
-class MediaViewHolder(
-    binding: FragmentMediaitemBinding,
-    itemClickedListener: (MediaItemData) -> Unit
-) : RecyclerView.ViewHolder(binding.root) {
 
-    val titleView: TextView = binding.title
-    val subtitleView: TextView = binding.subtitle
-    val albumArt: ImageView = binding.albumArt
-    val playbackState: ImageView = binding.itemState
-
-    var item: MediaItemData? = null
-
-    init {
-        binding.root.setOnClickListener {
-            item?.let { itemClickedListener(it) }
-        }
-    }
-}
