@@ -53,20 +53,22 @@ internal class AlbumArtContentProvider : ContentProvider() {
         val context = this.context ?: return null
         val remoteUri = uriMap[uri] ?: throw FileNotFoundException(uri.path)
 
-        var file = File(context.cacheDir, uri.path)
+        var file = uri.path?.let { File(context.cacheDir, it) }
 
-        if (!file.exists()) {
-            // Use Glide to download the album art.
-            val cacheFile = Glide.with(context)
-                .asFile()
-                .load(remoteUri)
-                .submit()
-                .get(DOWNLOAD_TIMEOUT_SECONDS, TimeUnit.SECONDS)
+        if (file != null) {
+            if (!file.exists()) {
+                // Use Glide to download the album art.
+                val cacheFile = Glide.with(context)
+                    .asFile()
+                    .load(remoteUri)
+                    .submit()
+                    .get(DOWNLOAD_TIMEOUT_SECONDS, TimeUnit.SECONDS)
 
-            // Rename the file Glide created to match our own scheme.
-            cacheFile.renameTo(file)
+                // Rename the file Glide created to match our own scheme.
+                cacheFile.renameTo(file)
 
-            file = cacheFile
+                file = cacheFile
+            }
         }
         return ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
     }
