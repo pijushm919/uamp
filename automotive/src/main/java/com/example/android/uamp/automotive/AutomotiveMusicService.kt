@@ -54,7 +54,6 @@ typealias CommandHandler = (parameters: Bundle, callback: ResultReceiver?) -> Bo
  */
 class AutomotiveMusicService : MusicService() {
 
-    @ExperimentalCoroutinesApi
     override fun onCreate() {
         super.onCreate()
 

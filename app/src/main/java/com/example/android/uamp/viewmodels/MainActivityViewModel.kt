@@ -112,7 +112,7 @@ class MainActivityViewModel(
      * - If the item *is* the active item, check whether "pause" is a permitted command. If it is,
      *   then pause playback, otherwise send "play" to resume playback.
      */
-    fun playMedia(mediaItem: MediaItemData, pauseAllowed: Boolean = true) {
+    private fun playMedia(mediaItem: MediaItemData, pauseAllowed: Boolean = true) {
         val nowPlaying = musicServiceConnection.nowPlaying.value
         val transportControls = musicServiceConnection.transportControls
 
